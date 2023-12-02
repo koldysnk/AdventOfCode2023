@@ -1,6 +1,8 @@
+INPUT_FILE = "Day1/day1input.txt"
+
 def attempt1():
   total = 0 
-  f = open("day1input.txt","r")
+  f = open(INPUT_FILE,"r")
   line = f.readline()
   while line:
     a = -1
@@ -12,11 +14,11 @@ def attempt1():
       elif i.isdigit():
         b = i
     total += int(a+b)
-    line = f.readlin()
+    line = f.readline()
   print(total)
   return total
 
-def main()
+def main():
   attempt1()
 
 main()
