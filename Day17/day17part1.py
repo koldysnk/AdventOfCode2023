@@ -1,7 +1,7 @@
 import time
 import math
 
-DEBUG = False
+DEBUG = True
 #Possible directions
 UP, DOWN, LEFT, RIGHT = 1,2,3,4
 #A node is represented as (x,y,cost,priority,previous direction, prev dir count,path)
@@ -59,6 +59,7 @@ def displaySG(sg, path):
     print()
 
 #This method works for the sample but explores 3393 nodes
+# For some reason this is way too inefficient to complete with input data
 def attempt1():
     INPUT_FILE = "Day17/day17input.txt"
 
@@ -182,9 +183,100 @@ def attempt1():
         if DEBUG:
             displaySG(search_grid, node_path)
 
+def attempt2():
+    INPUT_FILE = "Day17/day17input.txt"
+
+    f = open(INPUT_FILE,"r")
+
+    grid = [[int(x) for x in list(line.replace("\n",""))] for line in f.readlines()]
+
+    gX = len(grid)-1
+    gY = len(grid[gX])-1
+
+    priority_queue = []
+    visited = []
+
+    priority_queue.append((0,0,0,getPriority(0,0,0,gX,gY),0,0))
+
+    end = False
+    count = 0
+
+    #The idea here is to treat this as a maze solver or a path finder.
+    #Analyze the best path by using the cost of each move. 
+    #Start by just finding the fastest path. Then find fasest path with cost. Then add direction rules.
+    #I will try to use the A* algorithm
+    while not end:
+        node = priority_queue.pop()
+        node_cost = node[COST_SPOT]
+        node_dir = node[DIR_SPOT]
+        node_dir_count = node[DIR_COUNT_SPOT]
+        x = node[0]
+        y = node[1]
+
+        if (x,y) not in visited:
+            visited.append((x,y))
+
+        count += 1
+        #Goal state
+        if x ==gX and y ==gY:
+            end = True
+            print(f"{count}: {node_cost}")
+        else:
+            #Identify possible children and add to the queue
+            #Rules: cannot go backwards, cannot excede grid, cannot move 3x in one direction
+            #Should not move to a node that has already been visited
+
+            #Move up
+            if node_dir != DOWN and x > 0 and not (node_dir == UP and node_dir_count == 3):
+                nX, nY = x-1, y
+                if (nX,nY) not in visited:
+                    new_cost = node_cost + grid[nX][nY]
+                    new_priority = getPriority(new_cost,nX,nY,gX,gY)
+                    new_dir = UP
+                    new_dir_count = node_dir_count + 1 if node_dir == new_dir else 1
+                    new_node = (nX,nY,new_cost,new_priority,new_dir,new_dir_count)
+                    priorityAdd(priority_queue,new_node)
+            #Move right
+            if node_dir != LEFT and y < len(grid[x])-1 and not (node_dir == RIGHT and node_dir_count == 3):
+                nX, nY = x, y+1
+                if (nX,nY) not in visited:
+                    new_cost = node_cost + grid[nX][nY]
+                    new_priority = getPriority(new_cost,nX,nY,gX,gY)
+                    new_dir = UP
+                    new_dir_count = node_dir_count + 1 if node_dir == new_dir else 1
+                    new_node = (nX,nY,new_cost,new_priority,new_dir,new_dir_count)
+                    priorityAdd(priority_queue,new_node)
+                    
+            #Move down
+            if node_dir != UP and x < len(grid)-1 and not (node_dir == DOWN and node_dir_count == 3):
+                nX, nY = x+1, y
+                if (nX,nY) not in visited:
+                    new_cost = node_cost + grid[nX][nY]
+                    new_priority = getPriority(new_cost,nX,nY,gX,gY)
+                    new_dir = UP
+                    new_dir_count = node_dir_count + 1 if node_dir == new_dir else 1
+                    new_node = (nX,nY,new_cost,new_priority,new_dir,new_dir_count)
+                    priorityAdd(priority_queue,new_node)
+            #Move left
+            if node_dir != RIGHT and y > 0 and not (node_dir == LEFT and node_dir_count == 3):
+                nX, nY = x, y-1
+                if (nX,nY) not in visited:
+                    new_cost = node_cost + grid[nX][nY]
+                    new_priority = getPriority(new_cost,nX,nY,gX,gY)
+                    new_dir = UP
+                    new_dir_count = node_dir_count + 1 if node_dir == new_dir else 1
+                    new_node = (nX,nY,new_cost,new_priority,new_dir,new_dir_count)
+                    priorityAdd(priority_queue,new_node)
+        
+
+
 def main():
     tic = time.perf_counter()
     attempt1()
     toc = time.perf_counter()
     print(f"Attempt 1 took {toc-tic} seconds")
+    tic = time.perf_counter()
+    attempt2()
+    toc = time.perf_counter()
+    print(f"Attempt 2 took {toc-tic} seconds")
 main()
