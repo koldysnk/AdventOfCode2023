@@ -1,3 +1,5 @@
+import time
+
 INPUT_FILE = "Day20/day20input.txt"
 NO, LOW, HIGH = 0,1,2
 
@@ -93,7 +95,13 @@ def attempt1():
 
 
 def main():
+    #This version is too slow. My next attempt will be seeing what kind of state
+    #is required to give a low pulse to rx. Then find the first time that state is
+    #reached for each component. From there find the LCM.
+    tic = time.perf_counter()
     attempt1()
+    toc = time.perf_counter()
+    print(f"Attempt 1 took {toc-tic} seconds or {(toc-tic)/60} minutes")
 
 main()
 '''
