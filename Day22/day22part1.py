@@ -1,3 +1,4 @@
+import time
 X, Y, Z = 0, 1, 2
 
 class Brick():
@@ -78,7 +79,7 @@ class Brick():
             self.inShadow(brick)
 
 
-def main():
+def attempt1():
     INPUT_FILE = "Day22/day22input.txt"
 
     f = open(INPUT_FILE,"r")
@@ -105,4 +106,9 @@ def main():
 
     print(count)
 
+def main():
+    tic = time.perf_counter()
+    attempt1()
+    toc = time.perf_counter()
+    print(f"Attempt 1 took {toc-tic} seconds")
 main()
