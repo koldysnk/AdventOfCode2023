@@ -6,11 +6,13 @@ grid = [[x for x in list(line.replace("\n",""))] for line in f.readlines()]
 
 total = 0
 cycles = 1000000000
-pattern = []
+pattern = [str(grid)]
+totals = [0]
 pattern_started = False
 pattern_pos = 0
 pattern_start_pos = 0
-for i in range(cycles):
+i = 0
+while len(pattern)<cycles:
 
     #Shift North
     for og_x in range(len(grid)):
@@ -72,7 +74,21 @@ for i in range(cycles):
                 else:
                     movable = False
                     total += len(grid)-x
+
+    new_str = str(grid)
+    if new_str in pattern:
+        ind = pattern.index(new_str)
+        print("repeat for ",i," found at ",ind,total)
+        #print(totals)
+        pos = (cycles-i+1)%(i-ind)+ind+1
+        guess = totals[pos]
+        print("guess is: ",guess)
+        break
+    else:
+        pattern.append(new_str)
+        totals.append(total)
     
+    '''
     if pattern_started:
         if pattern_pos < len(pattern)-1 and pattern[pattern_pos+1] == total:
             pattern_pos +=1
@@ -96,11 +112,13 @@ for i in range(cycles):
         else:
             pattern.append(total)
             print(f"{i}: {total} pattern not started")
-
+    '''
         
 
 
     total = 0
+    i+=1
+
 
 
 #Finishes
