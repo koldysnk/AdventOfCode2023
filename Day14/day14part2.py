@@ -87,32 +87,7 @@ while len(pattern)<cycles:
     else:
         pattern.append(new_str)
         totals.append(total)
-    
-    '''
-    if pattern_started:
-        if pattern_pos < len(pattern)-1 and pattern[pattern_pos+1] == total:
-            pattern_pos +=1
-            print(f"{i}: {total} pattern continued")
-            if (cycles-pattern_start_pos)%(pattern_pos-pattern_start_pos):
-                print(f"{i}: {total} might be a winner")
-                break
-        elif pattern[pattern_start_pos] == total:
-            print(f"{i}: {total} pattern looped")
-        else:
-            pattern.extend(pattern[pattern_start_pos:pattern_pos+1])
-            pattern.append(total)
-            print(f"{i}: {total} pattern ended")
-            pattern_started = False
-    else:
-        if total in pattern:
-            pattern_pos = pattern.index(total)
-            pattern_start_pos = pattern_pos
-            pattern_started = True
-            print(f"{i}: {total} pattern started")
-        else:
-            pattern.append(total)
-            print(f"{i}: {total} pattern not started")
-    '''
+
         
 
 
