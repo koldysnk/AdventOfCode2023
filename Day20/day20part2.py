@@ -7,6 +7,17 @@ class Broadcaster():
     def __init__(self, dest,name) -> None:
         self.dest = dest
         self.name = name
+        self.minPresses = 0
+        self.goalState = ""
+
+    def __str__(self):
+        return f"{self.name} (Broadcaster)"
+    
+    def setGoalState(self):
+        self.goalState = str(self)
+
+    def isGoalState(self):
+        return str(self) == self.goalState
 
     def pulse(self,level,src):
         return [(d,level,self.name) for d in self.dest]
@@ -16,6 +27,17 @@ class FlipFlop():
         self.on = False
         self.dest = dest
         self.name = name
+        self.minPresses = 0
+        self.goalState = ""
+
+    def __str__(self):
+        return f"{self.name} (FlipFlop) {"ON" if self.on else "OFF"}"
+    
+    def setGoalState(self):
+        self.goalState = str(self)
+
+    def isGoalState(self):
+        return str(self) == self.goalState
 
     def pulse(self,level,src):
         if level == HIGH:
@@ -31,6 +53,17 @@ class Conjunction():
         self.dest = dest
         self.name = name
         self.memory = {s:LOW for s in src}
+        self.minPresses = 0
+        self.goalState = ""
+
+    def __str__(self):
+        return f"{self.name} (Conjunction) {str(self.memory)}"
+    
+    def setGoalState(self):
+        self.goalState = str(self)
+
+    def isGoalState(self):
+        return str(self) == self.goalState
 
     def pulse(self,level,src):
         self.memory[src] = level
