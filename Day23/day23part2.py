@@ -57,11 +57,14 @@ def attempt1():
                 queue.append((nX,nY,dist+1,newVisited))
 
 
-
-
     print(distances)
     print(maxDist)
 
+#The goal of attempt 2 is to group each direction into one node.
+#For example: a new node will only be added when a decision needs to be made.
+#Hopefully this will greatly reduce the number of nodes that will be analyzed.
+def attempt2():
+    pass
 
 def main():
     attempt1()
